@@ -5,7 +5,7 @@
 Enemy enemies [100];
 int enemyMoveDelay = 100000; // Tiempo de espera entre movimientos de los enemigos (en microsegundos)
 int score = 0;
-int enemiesEliminated = 0;
+
 
 void initEnemies(Enemy enemies[], int numEnemies) {
     int startX = 0; // Posición X inicial en la esquina superior izquierda
@@ -57,7 +57,6 @@ void* enemyThread(void* arg) {
     int direction = -1; // 1 = derecha, -1 = izquierda
     while (enemy->health > 0) {
 
-      
          usleep(enemyMoveDelay); // Esperar el tiempo de movimiento de los enemigos
       
         // Mover al enemigo horizontalmente

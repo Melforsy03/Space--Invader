@@ -3,6 +3,7 @@
 
 char screen[24][80];
 int fin = 0;
+int highScore = 0;
 char scoreScreen[3][40];
 void clear_screen(){
     for (int y = 0; y < 24; y++) {
@@ -67,7 +68,22 @@ void drawGameOver() {
     draw_to_screen();
     fin = 1;
 }
-
+int readHighScore() {
+    FILE* file = fopen("highscore.txt", "r");
+    int highScore = 0;
+    if (file) {
+        fscanf(file, "%d", &highScore);
+        fclose(file);
+    }
+    return highScore;
+}
+void saveHighScore(int score) {
+    FILE* file = fopen("highscore.txt", "w");
+    if (file) {
+        fprintf(file, "%d", score);
+        fclose(file);
+    }
+}
 
 
 

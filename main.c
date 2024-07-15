@@ -18,16 +18,17 @@ int main() {
     new_termios = old_termios;
     new_termios.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
-    
+
+     highScore = readHighScore();
     // Dibujar la nave del jugador en la posición inicial
     clear_screen();
     draw_player(player_x, player_y);
     int numEnemies = 50;
     pthread_t  input_thread_id , shootThread ,thread, updateAndDrawThread;
-    initBullets(bullets,100);
+    initBullets(bullets,10);
      Enemy enemies[numEnemies];
      initEnemies(enemies, numEnemies);
-     int highScore = 0;
+   
     // Crear y ejecutar los hilos
     pthread_create(&thread, NULL, move_player, NULL);
     pthread_create(&input_thread_id, NULL, input_thread, NULL);
@@ -40,9 +41,9 @@ int main() {
         clear_screen();
         draw_player(player_x, player_y);
         drawEnemies(enemies, numEnemies);
-        displayScores(score, 0);
-        drawBullets(bullets, 100);
-        checkCollisions(enemies, numEnemies, bullets , 100);
+        displayScores(score, highScore);
+        drawBullets(bullets, 10);
+        checkCollisions(enemies, numEnemies, bullets , 10);
         if (fin)
         {
             break;
@@ -53,7 +54,11 @@ int main() {
         nanosleep(&ts, NULL);
         int currentTime = time(NULL);
     }
-
+     // Guardar el mejor score
+    if (score > highScore) {
+        highScore = score;
+        saveHighScore(highScore);
+    }
     pthread_cancel(thread);
     pthread_mutex_destroy(&mutex);
     pthread_cancel(updateAndDrawThread);

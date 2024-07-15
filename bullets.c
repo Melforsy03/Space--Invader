@@ -18,7 +18,7 @@ void initBullets(Bullet bullets[], int numBullets) {
 void fireBullet(Bullet bullets[], int numBullets, int shipX, int shipY, int* bulletX, int* bulletY) {
     // Buscar la primera bala inactiva o la primera bala fuera de la pantalla
     for (int i = 0; i < numBullets; i++) {
-        if (bullets[i].y < 0) {
+        if (bullets[i].y < 0 || !bullets[i].active) {
             bullets[i].x = shipX;
             bullets[i].y = shipY - 1;
             bullets[i].active = 1;
