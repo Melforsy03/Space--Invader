@@ -1,6 +1,5 @@
 #include "pantalla.h"
 #include <stdio.h>
-
 char screen[24][80];
 int fin = 0;
 int highScore = 0;

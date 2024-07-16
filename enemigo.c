@@ -6,10 +6,9 @@ Enemy enemies [100];
 int enemyMoveDelay = 100000; // Tiempo de espera entre movimientos de los enemigos (en microsegundos)
 int score = 0;
 
-
 void initEnemies(Enemy enemies[], int numEnemies) {
     int startX = 0; // Posición X inicial en la esquina superior izquierda
-    int startY = 1; // Posición Y inicial en la primera fila
+    int startY = 2; // Posición Y inicial en la primera fila
     int enemiesPerRow = 10; // Número máximo de enemigos por fila
     
     for (int i = 0; i < numEnemies; i++) {
@@ -70,25 +69,45 @@ void* enemyThread(void* arg) {
             direction = -1; // Cambiar a dirección izquierda
             enemy->y++; // Establecer la posición Y del enemigo en la nueva fila
         }
+        
     }
-  
-    enemy->active = 0; // Desactivar al enemigo cuando sea eliminado
+    enemy->active = 0;
+    pthread_cancel(enemy->thread);
     score += enemy->health2;
     return NULL;
 }
 void drawEnemies(Enemy enemies[], int numEnemies) {
     for (int i = 0; i < numEnemies; i++) {
-      
-          if (enemies[i].active && enemies[i].health > 0) {
+        if (!enemies[i].active) {
+            // Buscar una posición libre para el enemigo
+            int startX = 79;
+            int startY = 0;
+            while (screen[startY][startX] != ' ' || screen[startY][startX - 1] != ' ' || screen[startY][startX - 2] != ' ' || screen[startY][startX - 3] != ' ') {
+                startX -= 4; // Retroceder 4 posiciones (ancho de cada enemigo más un espacio)
+                
+                // Si se llega al inicio de la pantalla, pasar a la siguiente fila
+                if (startX <= 0) {
+                    startX = 79; // Reiniciar la posición X
+                    startY++; // Pasar a la siguiente fila
+                }
+            }
+            enemies[i].x = startX;
+            enemies[i].y = startY;
+            enemies[i].active = 0;
+            enemies[i].health = (rand_r(&(unsigned int){time(NULL) ^ i}) % 3) + 1;
+            pthread_create(&enemies[i].thread, NULL, enemyThread, &enemies[i]);
+        }
+        
+        if (enemies[i].active && enemies[i].health > 0) {
             char healthChar[2];
             sprintf(healthChar, "%d", enemies[i].health);
             screen[enemies[i].y][enemies[i].x] = healthChar[0];
             screen[enemies[i].y][enemies[i].x - 1] = '<';
             screen[enemies[i].y][enemies[i].x + 1] = '>';
         }
-    
     }
 }
+
 
 
 
