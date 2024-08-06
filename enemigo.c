@@ -9,7 +9,7 @@ int score = 0;
 void initEnemies(Enemy enemies[], int numEnemies) {
     int startX = 0; // Posición X inicial en la esquina superior izquierda
     int startY = 2; // Posición Y inicial en la primera fila
-    int enemiesPerRow = 10; // Número máximo de enemigos por fila
+    //int enemiesPerRow = 10; // Número máximo de enemigos por fila
     
     for (int i = 0; i < numEnemies; i++) {
         // Verificar si hay espacio suficiente en la fila actual
