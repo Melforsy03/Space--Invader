@@ -7,7 +7,7 @@ int player_x = 80 / 2;
 int player_y = 24 / 2;
 int moving_left = 0, moving_right = 0, moving_up = 0, moving_down = 0;
 pthread_mutex_t mutex;
-void* move_player(void) {
+void*move_player(void* arg) {
     while (1) {
         pthread_mutex_lock(&mutex);
       
@@ -33,7 +33,7 @@ void* move_player(void) {
     }
     return NULL;
 }
-void draw_player(int x, int y) {
+void draw_player(int x, int y) { 
     // Borrar la nave en su posición actual
     clear_screen();
     for (int i = 0; i < 3; i++) {

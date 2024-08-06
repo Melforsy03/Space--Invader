@@ -12,7 +12,7 @@ extern pthread_mutex_t mutex;
 void move_cursor(int x, int y);
 void clear_screen();
 void draw_player(int x, int y);
-void* move_player(void);
+void* move_player(void*arg);
 void *input_thread(void *arg);
 
 #endif // GAME_H
